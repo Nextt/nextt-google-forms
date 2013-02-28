@@ -221,8 +221,8 @@ function ngf_submit(){
 
 			do_action(ngfID.'_after_gform_submit', $vars, $data);
 
-			wp_redirect( home_url() );
-			exit;
+			//wp_redirect( home_url() );
+			//exit;
 		}
 	}
 }
