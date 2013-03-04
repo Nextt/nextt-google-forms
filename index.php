@@ -225,10 +225,10 @@ function ngf_submit(){
 				wp_redirect( home_url() );
 				exit;
 			}else{
-				echo 'And now what? '.$do_redirect->get_error_message();
+				echo ' And now what? '.$do_redirect->get_error_message();
 			}
 		}else{
-			echo 'And now what? '.$vars->get_error_message();
+			echo ' And now what? '.$vars->get_error_message();
 		}
 	}
 }
