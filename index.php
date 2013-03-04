@@ -197,7 +197,7 @@ function ngf_submit(){
 		$vir='';
 
 		$vars = apply_filters(ngfID.'_filter_post_data', $_POST);
-		if ( $vars ){
+		if ( !is_wp_error($vars) ){
 
 			foreach ($vars as $key => $value) {
 				if(preg_match ( $entry , $key)){
@@ -219,10 +219,16 @@ function ngf_submit(){
 			$data = curl_exec ($ch);
 			curl_close($ch);
 
-			do_action(ngfID.'_after_gform_submit', $vars, $data);
+			$do_redirect = apply_filters(ngfID.'_after_gform_submit', $vars, $data);
 
-			//wp_redirect( home_url() );
-			//exit;
+			if(!is_wp_error($do_redirect)){
+				wp_redirect( home_url() );
+				exit;
+			}else{
+				echo 'And now what? '.$do_redirect->get_error_message();
+			}
+		}else{
+			echo 'And now what? '.$vars->get_error_message();
 		}
 	}
 }
