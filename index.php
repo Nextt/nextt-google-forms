@@ -55,6 +55,22 @@ function ngf_metabox( $object, $box ) { ?>
 		<input class="widefat" type="text" name="<?php echo ngfID; ?>_URL_response" id="<?php echo ngfID; ?>_URL_response" value="<?php echo esc_attr( get_post_meta( $object->ID, ngfID.'_URL_response', true ) ); ?>" size="30" />
 	</p>
 	<p>
+		<label for="<?php echo ngfID; ?>_page_form_sent"><?php _e( "The page to be redirected after submit the form."); ?></label>
+		<select name="<?php echo ngfID; ?>_page_form_sent" id="<?php echo ngfID; ?>_page_form_sent">
+			<?php
+				$pages = get_pages();
+				$page_form_sent = get_post_meta( $object->ID, ngfID.'_page_form_sent', true );					
+				foreach ( $pages as $page ) {
+					$page_link = get_page_link( $page->ID );
+					$option = '<option value="' . $page_link .'" '.selected( $page_link, $page_form_sent ).'>';
+					$option .= $page->post_title;
+					$option .= '</option>';
+					echo $option;
+				}
+			?>
+		</select>
+	</p>
+	<p>
 		<?php
 			$checked = '';
 			if($is_checked = get_post_meta( $object->ID, ngfID.'_keep_style', true )){
@@ -80,7 +96,7 @@ function ngf_save_postmeta( $post_id, $post ) {
 		if ( !current_user_can( $post_type->cap->edit_post, $post_id ) )
 			return $post_id;
 
-		$meta_options = array(ngfID.'_keep_style' , ngfID.'_URL' , ngfID.'_URL_response');
+		$meta_options = array(ngfID.'_keep_style' , ngfID.'_URL' , ngfID.'_URL_response', ngfID.'_page_form_sent');
 
 		$havemeta = false;
 		$keepCSS = false;
@@ -89,7 +105,7 @@ function ngf_save_postmeta( $post_id, $post ) {
 			$new_meta_value = ( isset( $_POST[$opt] ) ? trim( $_POST[$opt] ) : '' );
 
 			/* Checks if at least one meta is set to verify shortcode and stuffs later */
-			if(!empty($new_meta_value)){
+			if((!empty($new_meta_value)) && $opt!=ngfID.'_page_form_sent'){
 				$havemeta = true;
 				if($opt == ngfID.'_keep_style') $keepCSS = true;
 			}
@@ -222,7 +238,7 @@ function ngf_submit(){
 			$do_redirect = apply_filters(ngfID.'_after_gform_submit', $vars, $data);
 
 			if(!is_wp_error($do_redirect)){
-				wp_redirect( home_url() );
+				wp_redirect( get_post_meta( $_POST['id_hidden'], ngfID.'_page_form_sent', true ) );
 				exit;
 			}else{
 				echo ' And now what? '.$do_redirect->get_error_message();
