@@ -28,15 +28,17 @@ function ngf_post_meta_boxes_setup() {
 }
 
 function ngf_add_post_meta_boxes() {
-
-	add_meta_box(
-		ngfID.'-google-form-box',			// Unique ID
-		esc_html__( 'Nextt Google Form', ngfID),		// Title
-		ngfID.'_metabox',		// Callback function
-		array('post', 'page'),					// Admin page (or post type)
-		'normal',					// Context
-		'default'					// Priority
-	);
+	$screens = array( 'post', 'page' );
+  foreach ($screens as $screen) {
+		add_meta_box(
+			ngfID.'-google-form-box',			// Unique ID
+			esc_html__( 'Nextt Google Form', ngfID),		// Title
+			ngfID.'_metabox',		// Callback function
+			$screen,					// Admin page (or post type)
+			'normal',					// Context
+			'default'					// Priority
+		);
+	}
 }
 
 
