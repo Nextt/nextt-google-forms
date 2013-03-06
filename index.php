@@ -33,7 +33,7 @@ function ngf_add_post_meta_boxes() {
 		ngfID.'-google-form-box',			// Unique ID
 		esc_html__( 'Nextt Google Form', ngfID),		// Title
 		ngfID.'_metabox',		// Callback function
-		'post',					// Admin page (or post type)
+		array('post', 'page'),					// Admin page (or post type)
 		'normal',					// Context
 		'default'					// Priority
 	);
