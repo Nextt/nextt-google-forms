@@ -192,6 +192,7 @@ function ngf_save_postmeta( $post_id, $post ) {
 
 function ngf_render_form(){
 	global $post;
+	do_action( 'render_form_notices' );
 	$htmlform = get_post_meta( $post->ID, ngfID.'_form', true );
 	$nonce = wp_nonce_field( basename( __FILE__ ).'_submit', ngfID.'_nonce_submit',true,false );
 	$return = substr($htmlform, 0, -7) . $nonce . '<input type="hidden" name="id_hidden" id="id_hidden" value="'.$post->ID.'"/> '. substr($htmlform, -7);
@@ -239,14 +240,19 @@ function ngf_submit(){
 
 			$do_redirect = apply_filters(ngfID.'_after_gform_submit', $vars, $data);
 
-			if(!is_wp_error($do_redirect)){
+			if (!is_wp_error($do_redirect)){
 				wp_redirect( get_post_meta( $_POST['id_hidden'], ngfID.'_page_form_sent', true ) );
 				exit;
-			}else{
-				echo ' And now what? '.$do_redirect->get_error_message();
+			
+			} else {
+				// Lets let the admin know whats going on.
+  			$msg = '<div class="error"><h3>Encontramos um problema.</h3><p>'.$do_redirect->get_error_message().'</p></div>';
+  			add_action( 'render_form_notices', $c = create_function( '', 'echo "' . addcslashes( $msg, '"' ) . '";' ) );
 			}
-		}else{
-			echo ' And now what? '.$vars->get_error_message();
+
+		} else {
+ 			$msg = '<div class="error"><h3>Encontramos um problema.</h3><p>'.$vars->get_error_message().'</p></div>';
+			add_action( 'render_form_notices', $c = create_function( '', 'echo "' . addcslashes( $msg, '"' ) . '";' ) );
 		}
 	}
 }
