@@ -197,6 +197,9 @@ function ngf_render_form(){
 	$nonce = wp_nonce_field( basename( __FILE__ ).'_submit', ngfID.'_nonce_submit',true,false );
 	$return = substr($htmlform, 0, -7) . $nonce . '<input type="hidden" name="id_hidden" id="id_hidden" value="'.$post->ID.'"/> '. substr($htmlform, -7);
 	$return .= get_post_meta( $post->ID, ngfID.'_js', true);
+
+	wp_enqueue_script( 'ngf-validator', plugin_dir_url( __FILE__ ) . '/ngf-validator.js', array( 'jquery' )	);
+
 	return $return;
 }
 
