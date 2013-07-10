@@ -198,7 +198,8 @@ function ngf_render_form(){
 	$return = substr($htmlform, 0, -7) . $nonce . '<input type="hidden" name="id_hidden" id="id_hidden" value="'.$post->ID.'"/> '. substr($htmlform, -7);
 	$return .= get_post_meta( $post->ID, ngfID.'_js', true);
 
-	wp_enqueue_script( 'ngf-validator', plugin_dir_url( __FILE__ ) . '/ngf-validator.js', array( 'jquery' )	);
+	wp_enqueue_script( 'ngf-validator', plugin_dir_url( __FILE__ ) . '/static/js/ngf-validator.js', array( 'jquery' )	);
+	wp_enqueue_style( 'ngf-style', plugin_dir_url( __FILE__ ) . '/static/css/ngf-style.css', array(), '1.0.0', 'all' );
 
 	return $return;
 }
