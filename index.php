@@ -235,7 +235,7 @@ function ngf_submit(){
 
 			foreach ($vars as $key => $value) {
 				if(preg_match ( $entry , $key)){
-					$postdata .= $vir.urlencode(str_replace("_", "." , $key)) . "=" . $value ;
+					$postdata .= $vir.urlencode(str_replace("_", "." , $key)) . "=" . urlencode($value);
 					$vir = "&";
 				}
 			}
