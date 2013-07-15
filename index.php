@@ -192,11 +192,22 @@ function ngf_save_postmeta( $post_id, $post ) {
 
 function ngf_render_form(){
 	global $post;
+
 	do_action( 'render_form_notices' );
 	$htmlform = get_post_meta( $post->ID, ngfID.'_form', true );
 	$nonce = wp_nonce_field( basename( __FILE__ ).'_submit', ngfID.'_nonce_submit',true,false );
 	$return = substr($htmlform, 0, -7) . $nonce . '<input type="hidden" name="id_hidden" id="id_hidden" value="'.$post->ID.'"/> '. substr($htmlform, -7);
-	$return .= get_post_meta( $post->ID, ngfID.'_js', true);
+	//$return .= get_post_meta( $post->ID, ngfID.'_js', true);
+
+	//Fill form with 
+	$return .= "<script>jQuery(document).ready(function(){";
+	foreach ($_POST as $key => $value) {
+		if (substr($key, 0, 5) != 'entry') continue;
+		$return .= "jQuery('input:radio[name=\"".str_replace("_", ".", $key)."\"][value=\"".$value."\"]').attr('checked',true);\n";
+		$return .= "jQuery('input:checkbox[name=\"".str_replace("_", ".", $key)."\"][value=\"".$value."\"]').attr('checked',true);\n";
+		$return .= "jQuery('input:text[name=\"".str_replace("_", ".", $key)."\"], textarea[name=\"".str_replace("_", ".", $key)."\"]').val('".$value."');\n\n";
+	}
+	$return .= "});</script>";
 
 	wp_enqueue_script( 'ngf-validator', plugin_dir_url( __FILE__ ) . '/static/js/ngf-validator.js', array( 'jquery' )	);
 	wp_enqueue_style( 'ngf-style', plugin_dir_url( __FILE__ ) . '/static/css/ngf-style.css', array(), '1.0.0', 'all' );
