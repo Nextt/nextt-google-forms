@@ -1,6 +1,6 @@
-.ss-form .ss-choice-item{
+.ss-choice-item{
   list-style: none;
-  padding-left: 0 !important;
+  margin-left: 0 !important;
 }
 
 .ss-q-short{
@@ -20,4 +20,8 @@
 
 .ss-q-title {
   font-weight: bold;
+}
+
+#ss-submit{
+  
 }
