@@ -195,6 +195,8 @@ function ngf_render_form(){
 
 	do_action( 'render_form_notices' );
 	$htmlform = get_post_meta( $post->ID, ngfID.'_form', true );
+	$htmlform = str_replace('value="Submit"', 'value="Enviar seu voto" class="btn btn-large"', $htmlform);
+	$htmlform = str_replace('Never submit passwords through Google Forms.', '', $htmlform);
 	$nonce = wp_nonce_field( basename( __FILE__ ).'_submit', ngfID.'_nonce_submit',true,false );
 	$return = substr($htmlform, 0, -7) . $nonce . '<input type="hidden" name="id_hidden" id="id_hidden" value="'.$post->ID.'"/> '. substr($htmlform, -7);
 	//$return .= get_post_meta( $post->ID, ngfID.'_js', true);
