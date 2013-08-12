@@ -228,12 +228,11 @@ function ngf_header(){
 	}
 }
 function ngf_submit(){
-	if ( !empty($_POST[ngfID.'_nonce_submit']) && wp_verify_nonce($_POST[ngfID.'_nonce_submit'],basename( __FILE__ ).'_submit') ){
-		
+	// if ( !empty($_POST[ngfID.'_nonce_submit']) && wp_verify_nonce($_POST[ngfID.'_nonce_submit'],basename( __FILE__ ).'_submit') ){
+	if ( !empty($_POST[ngfID.'_nonce_submit']) ){
 		$entry = '/^entry_/';
 		$postdata='';
 		$vir='';
-
 		$vars = apply_filters(ngfID.'_filter_post_data', $_POST);
 		if ( !is_wp_error($vars) ){
 
