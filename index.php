@@ -216,7 +216,7 @@ function ngf_render_form(){
 	wp_enqueue_script( 'ngf-validator', plugin_dir_url( __FILE__ ) . '/static/js/ngf-validator.js', array( 'jquery' )	);
 	wp_enqueue_style( 'ngf-style', plugin_dir_url( __FILE__ ) . '/static/css/ngf-style.css', array(), '1.0.0', 'all' );
 
-	return apply_filters( $ngfID.'_filter_rendered_form', $return );
+	return apply_filters( ngfID.'_filter_rendered_form', $return );
 }
 
 function ngf_header(){
