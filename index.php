@@ -133,6 +133,10 @@ function ngf_save_postmeta( $post_id, $post ) {
 			/* Save the HTML google form */
 			$url = get_post_meta( $post_id, ngfID.'_URL', true );
 			$str = file_get_contents($url);
+
+			//cleanup Google Forms Dirty Markup
+			$str = preg_replace('/(<div[^>]*\/>)/i', '', $str);
+			
 			$dom = new DOMDocument();
 			$dom->loadHTML($str);
 			$form = $dom->getElementsByTagName('form')->item(0);
