@@ -136,13 +136,17 @@ function ngf_save_postmeta( $post_id, $post ) {
 
 			//cleanup Google Forms Dirty Markup
 			$str = preg_replace('/(<div[^>]*\/>)/i', '', $str);
-			
+
+
 			$dom = new DOMDocument();
-			$dom->loadHTML($str);
+			@$dom->loadHTML($str);
 			$form = $dom->getElementsByTagName('form')->item(0);
 			$form->removeAttribute('action');
 			$form->removeAttribute('onsubmit');
-			update_post_meta( $post_id, ngfID.'_form', $dom->saveXML($form) );
+
+			error_log( var_export($str, true));
+
+			update_post_meta( $post_id, ngfID.'_form', $dom->saveHTML($form) );
 
 			/* Save the CSS */
 			if($keepCSS){
