@@ -134,9 +134,8 @@ function ngf_save_postmeta( $post_id, $post ) {
 			$url = get_post_meta( $post_id, ngfID.'_URL', true );
 			$str = file_get_contents($url);
 
-			//cleanup Google Forms Dirty Markup
+			//cleanup Google Forms empty divs
 			$str = preg_replace('/(<div[^>]*\/>)/i', '', $str);
-
 
 			$dom = new DOMDocument();
 			@$dom->loadHTML($str);
@@ -144,9 +143,8 @@ function ngf_save_postmeta( $post_id, $post ) {
 			$form->removeAttribute('action');
 			$form->removeAttribute('onsubmit');
 
-			error_log( var_export($str, true));
-
-			update_post_meta( $post_id, ngfID.'_form', $dom->saveHTML($form) );
+			$form_str = $dom->saveXML($form, LIBXML_NOEMPTYTAG);
+			update_post_meta( $post_id, ngfID.'_form', $form_str);
 
 			/* Save the CSS */
 			if($keepCSS){
